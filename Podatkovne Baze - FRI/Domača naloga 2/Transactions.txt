@@ -1,0 +1,57 @@
+1.	Koliko otrok je v vrtcu.
+	
+	SELECT count(*) as "Število otrok" 
+	FROM OTROK;
+	
+2.	Koliko otrok je v skupini.
+
+	SELECT SKU_ID, count(*) as "Otroci v skupini" 
+	FROM OTROK 
+	GROUP BY SKU_ID;
+
+3.	Koliko je skupin.
+
+	SELECT count(*) as "Število skupin" 
+	FROM SKUPINA;
+
+4.  Izpiše ime, priimek in letnico rojstva otroka.
+
+	SELECT os.IME, os.PRIIMEK, o.LETNICAROJSTVA
+	FROM OTROK o, OSEBA os 
+	WHERE os.EMSO = o.EMSO;
+	
+5.	Izpiše kontaktne informacije starševe organizacije (službe) za določenega otroka.
+	
+	SELECT DISTINCT(os.IME), os.PRIIMEK, g.TELEFONSKASTEVILKA, g.EMAIL
+	FROM OSEBA os, OTROK o, ORGANIZACIJA g, STARS s, "JeOtrok/Stars" u, "Je zaposlen" j
+	WHERE s.EMSO = u.EMSO AND j.EMSO = s.EMSO AND g.ID = j.ID AND u.OTR_EMSO = o.EMSO AND os.IME = 'Dejan' AND os.PRIIMEK = 'Vohar';
+	
+6.	Izpiši seštevek plač vseh zaposlenih.
+
+	SELECT SUM(v.PLACA) as "Seštevek vseh plač"
+	FROM VZGOJITELJ v;
+	
+7.	Seznam vseh sob, ki obstajajo in ime skupine, ki se nahaja v tej sobi.
+	
+	SELECT s.STEVILKASOBE as "Številka sobe", x.NAZIV as "Ime skupine", s.KAPACITETA as "Velikost sobe", s.OPIS as "Opis"
+	FROM SOBA s, SKUPINA x
+	WHERE s.ID = x.ID
+	
+
+8.	Izpiši kateri skupini pripada katera soba, njena kapaciteta in opis.
+
+	SELECT sk.NAZIV as "Ime skupine", s.STEVILKASOBE as "Številka sobe", s.KAPACITETA as "Kapaciteta", s.OPIS as "Opis"
+	FROM SKUPINA sk, SOBA s
+	WHERE sk.ID = s.ID;
+
+9. Izpiši vse osebe in njihov kraj bivanja.
+
+	SELECT os.IME, os.PRIIMEK, k.IMEKRAJA
+	FROM OSEBA os, KRAJ k
+	WHERE os.POSTNASTEVILKA = k.POSTNASTEVILKA;
+
+10.	Izpiše vse otroke iz določenega kraja. 
+
+	SELECT DISTINCT(os.IME), os.PRIIMEK, k.IMEKRAJA as "Ime Kraja"
+	FROM OTROK o, OSEBA os INNER JOIN KRAJ k ON os.POSTNASTEVILKA = k.POSTNASTEVILKA
+	WHERE k.IMEKRAJA = 'Ljubljana';

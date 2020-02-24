@@ -1,0 +1,41 @@
+1. Popravki v konceptualnem modelu:
+	- Povezava Oseba - Naslov
+	- Povezava Naslov - Kraj
+2. 
+	- Generalizacija: Podedovanje samo primarnih atributov, generiranje vseh otrok & starša (2 Generalizacije)
+	- Povezava 1-1: V prejšnji (nepopravljeni verziji), težavo smo odpravili
+	- Normalizacija: Normalizirala sva že konceptualni model
+	
+3. 
+	- Indexi: 
+		Indexe sva postavila na atribute, ki jih velikokrat uporabiva pri transakcijah
+			- Atribut EMSO v Oseba
+			- Atribut EMSO v Otrok
+			
+			- Atribut IMEKRAJA v Kraj -- urejanje po abecedi (ASC)
+
+4.
+	- SQL ukazi za kreiranje: > Create.sql <
+		+ Popravek: Vmesna tabela "Je spola", popravljeno v Fizičnem modelu in nato pridobitev SQL create kode:
+		
+		CREATE TABLE "Je spola"(
+			EMSO  VARCHAR2(30 Byte)   NOT NULL,
+			ID    NUMBER              NOT NULL
+		) TABLESPACE USERS;
+		
+		ALTER TABLE "Je spola"
+		ADD CONSTRAINT "PK_JE SPOLA"
+		PRIMARY KEY (EMSO, ID) 
+		USING INDEX TABLESPACE USERS;
+
+		ALTER TABLE "Je spola"
+		ADD CONSTRAINT "FK_JE SPOLA_REFERENCE_OTROK" FOREIGN KEY (EMSO)
+		REFERENCES OTROK (EMSO);
+
+		LTER TABLE "Je spola"
+		ADD CONSTRAINT "FK_JE SPOLA_REFERENCE_SPOL" FOREIGN KEY (ID)
+		REFERENCES SPOL (ID);
+		
+	- Indexi in pogledi: > V&I.txt <
+	
+5. Transakcije: > Transactions.txt < 

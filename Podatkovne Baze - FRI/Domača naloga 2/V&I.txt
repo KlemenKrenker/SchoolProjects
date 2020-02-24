@@ -1,0 +1,31 @@
+Indexi:
+
+create index KRAJX on KRAJ ( -- Kraji urejeni po abecedi
+	IMEKRAJA ASC
+);
+
+create index OSEBAX on OSEBA ( -- EMSO v tabeli Oseba, urejen po abecedi (zaradi velike uporabe)
+	EMSO ASC
+);
+
+create index OTROKX on OTROK ( -- EMSO v tabeli Otrok, urejen po abecedi (zaradi velike uporabe)
+	EMSO ASC
+);
+
+
+Viewi:
+
+
+-- Seznam otrok, ki so se udeležili izleta, ki je stal manj kot 200€.
+create view Udelezitev_pod200E as 
+	SELECT DISTINCT(os.IME) as "Ime", os.PRIIMEK as "Priimek", i.OPIS as "Opis", i.CENA as "Cena"
+	FROM OSEBA os, IZLET i, "Se udeleži" u, OTROK o
+	WHERE os.EMSO = o.EMSO AND o.EMSO = u.EMSO AND i.CENA < 200
+
+
+-- Seštevek otrok, deljen po spolih
+create view SpoliOtrok as 
+	SELECT s.NAZIV as "Spol", SUM(j.ID) as "Število otrok"
+	FROM "Je spola" j, SPOL s
+	WHERE j.ID = s.ID
+	GROUP BY s.NAZIV;
